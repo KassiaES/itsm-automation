@@ -1,0 +1,37 @@
+# PowerShell ITSM Automation - Git Ignore
+
+# Logs
+*.log
+logs/
+
+# Configurações com credenciais
+*config*.json
+*credential*.json
+*.psd1
+
+# Arquivos temporários
+*.tmp
+*.temp
+last_ticket.json
+automation_report_*.json
+bulk_creation_report_*.json
+
+# Sistema
+.DS_Store
+Thumbs.db
+
+# VS Code
+.vscode/
+*.code-workspace
+
+# PowerShell
+*.psm1
+*.ps1xml
+
+# Backup files
+*.bak
+*.backup
+
+# Test files  
+*test*.ps1
+*debug*.ps1
