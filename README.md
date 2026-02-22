@@ -114,8 +114,8 @@ $config = @{
 $config = @{
     Platform = "Jira"
     BaseURL = "https://minhaempresa.atlassian.net"
-    Username = "meu.email@empresa.com"
-    Password = "api_token_aqui"  # Use API Token, não senha
+    Username = "[seu.email@empresa.com]"
+    Password = "[seu_api_token_aqui]"  # Use API Token, não senha
 }
 ```
 

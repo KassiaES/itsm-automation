@@ -18,8 +18,8 @@ $testConfig = @{
 # $realConfig = @{
 #     Platform = "ServiceNow" 
 #     BaseURL = "https://devXXXXX.service-now.com"
-#     Username = "admin"
-#     Password = "sua_senha"
+#     Username = "[seu_usuario]"
+#     Password = "[sua_senha_segura]"
 # }
 
 # Jira Cloud
@@ -42,11 +42,11 @@ $testConfig = @{
 Write-Host "`n🔐 Realizando login..." -ForegroundColor Yellow
 
 try {
-    $loginResult = & "$PSScriptRoot\itsm_login.ps1" `
+    $null = & "$PSScriptRoot\itsm_login.ps1" `
         -Platform $testConfig.Platform `
         -BaseURL $testConfig.BaseURL `
         -Username $testConfig.Username `
-        -Password $testConfig.Password
+        -Password (ConvertTo-SecureString $testConfig.Password -AsPlainText -Force)
     
     Write-Host "✅ Login realizado com sucesso!" -ForegroundColor Green
 }

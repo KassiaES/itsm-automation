@@ -13,7 +13,7 @@ param(
     [string]$Username,
     
     [Parameter(Mandatory=$true)]
-    [string]$Password,
+    [SecureString]$Password,
     
     [Parameter(Mandatory=$false)]
     [string]$Domain = ""
@@ -21,11 +21,12 @@ param(
 
 # Função para criar headers de autenticação
 function Get-AuthHeaders {
-    param($Platform, $Username, $Password)
+    param($Platform, $Username, [SecureString]$Password)
     
     switch ($Platform) {
         "ServiceNow" {
-            $base64 = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes("${Username}:${Password}"))
+            $plainPassword = [Runtime.InteropServices.Marshal]::PtrToStringAuto([Runtime.InteropServices.Marshal]::SecureStringToBSTR($Password))
+            $base64 = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes("${Username}:${plainPassword}"))
             return @{
                 "Authorization" = "Basic $base64"
                 "Content-Type" = "application/json"
@@ -33,14 +34,16 @@ function Get-AuthHeaders {
             }
         }
         "Jira" {
-            $base64 = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes("${Username}:${Password}"))
+            $plainPassword = [Runtime.InteropServices.Marshal]::PtrToStringAuto([Runtime.InteropServices.Marshal]::SecureStringToBSTR($Password))
+            $base64 = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes("${Username}:${plainPassword}"))
             return @{
                 "Authorization" = "Basic $base64"
                 "Content-Type" = "application/json"
             }
         }
         "FreshService" {
-            $base64 = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes("${Username}:${Password}"))
+            $plainPassword = [Runtime.InteropServices.Marshal]::PtrToStringAuto([Runtime.InteropServices.Marshal]::SecureStringToBSTR($Password))
+            $base64 = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes("${Username}:${plainPassword}"))
             return @{
                 "Authorization" = "Basic $base64"
                 "Content-Type" = "application/json"
@@ -69,7 +72,7 @@ function Test-ITSMConnection {
             "Jira" {
                 $uri = "$BaseURL/rest/api/2/myself"
                 $response = Invoke-RestMethod -Uri $uri -Headers $Headers -Method GET
-                return $response.name -ne $null
+                return $null -ne $response.name
             }
             "FreshService" {
                 $uri = "$BaseURL/api/v2/requesters"

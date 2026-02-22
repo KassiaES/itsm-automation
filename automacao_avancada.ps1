@@ -250,7 +250,7 @@ function Test-ITSMHealth {
     # Teste 4: Consulta de tickets
     Write-Host "  📋 Testando consulta de tickets..." -ForegroundColor White
     try {
-        $queryResult = & "$PSScriptRoot\consultar_tickets.ps1" -Limit 1
+        $null = & "$PSScriptRoot\consultar_tickets.ps1" -Limit 1
         $healthChecks["Consulta de Tickets"] = $true
         Write-Host "    ✅ Consulta OK" -ForegroundColor Green
     }
